@@ -8,15 +8,24 @@ data "terraform_remote_state" "creds" {
   }
 }
 
-data "vault_aws_access_credentials" "creds" {
+data "vault_aws_access_credentials" "aws_creds" {
   backend = data.terraform_remote_state.creds.outputs.backend
   role    = data.terraform_remote_state.creds.outputs.role
 }
 
+data "vault_azure_access_credentials" "azure_creds" {
+  role                        = "generated_role" 
+}
+
 provider "aws" {
   region     = var.region
-  access_key = data.vault_aws_access_credentials.creds.access_key
-  secret_key = data.vault_aws_access_credentials.creds.secret_key
+  access_key = data.vault_aws_access_credentials.aws_creds.access_key
+  secret_key = data.vault_aws_access_credentials.aws_creds.secret_key
+}
+
+provider "azurerm" {  
+  client_id         = data.vault_azure_access_credentials.azure_creds.client_id
+  client_secret     = data.vault_azure_access_credentials.azure_creds.client_secret
 }
 
 # Create AWS EC2 Instance
@@ -25,3 +34,9 @@ resource "aws_instance" "main" {
   ami           = "ami-0e34bbddc66def5ac"
   instance_type = "t2.nano"
 }
+
+# Create Azure Instance
+module "azure" {
+  count = var.azure ? 1 : 0
+  source = "./modules/azure"
+  }

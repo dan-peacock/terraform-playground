@@ -12,5 +12,11 @@ variable "ttl" {
     }
 
 variable "aws" {
-    default = "False"  
+    default = "false"
+    type = "bool"
+}
+
+variable "azure" {
+    default = "false"
+    type = "bool"
 }
