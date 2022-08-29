@@ -26,6 +26,8 @@ provider "aws" {
 }
 
 provider "azurerm" {  
+  features {
+  }
   client_id         = data.vault_azure_access_credentials.azure_creds.client_id
   client_secret     = data.vault_azure_access_credentials.azure_creds.client_secret
 }
