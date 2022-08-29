@@ -7,6 +7,7 @@ variable "vm_size" {
 variable "default_password" {
     description = "inital password for VM"
     type = string
+    default = ""
 }
 
 variable "tags" {
