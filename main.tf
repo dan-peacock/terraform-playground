@@ -13,8 +13,10 @@ data "vault_aws_access_credentials" "aws_creds" {
   role    = data.terraform_remote_state.creds.outputs.role
 }
 
+
 data "vault_azure_access_credentials" "azure_creds" {
-  role                        = "generated_role" 
+  backend = data.terraform_remote_state.creds.outputs.azure_backend
+  role    = data.terraform_remote_state.creds.outputs.azure_role
 }
 
 provider "aws" {
