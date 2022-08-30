@@ -29,6 +29,7 @@ provider "azurerm" {
   features {
   }
   disable_terraform_partner_id = true
+  version = "2.4"
   tenant_id         = var.azure_tenant_id
   subscription_id   = var.azure_subscription_id
   client_id         = data.vault_azure_access_credentials.azure_creds.client_id
